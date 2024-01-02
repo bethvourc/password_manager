@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_wtf import FlaskForm
+from flask import request, jsonify
 from flask_migrate import Migrate
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length
@@ -18,9 +19,10 @@ bcrypt = Bcrypt(app)
 cipher_suite = Fernet(Fernet.generate_key())
 
 class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+    username = db.Column(db.String(500), unique=True, nullable=False)
+    password = db.Column(db.String(500), nullable=False)
     data = db.Column(db.Text, nullable=True)
 
 class RegistrationForm(FlaskForm):
@@ -52,6 +54,11 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    username = request.form.get('username')
+
+    if db.session.query(User).filter_by(username=username).first():
+        return jsonify({'error': 'Username already exists'}), 400
+    
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -78,8 +85,13 @@ def login():
 def dashboard():
     form = DashboardForm()
     user = User.query.filter_by(username=form.username.data).first()
+
+    if user is None:
+        flash('User not found!', 'danger')
+        return redirect(url_for('dashboard'))
+
     if form.validate_on_submit():
-        encrypted_data = user.data
+        encrypted_data = user.data or ''  # Handle the case where user.data is None
         decrypted_data = decrypt_data(encrypted_data)
         data_dict = eval(decrypted_data) if decrypted_data else {}
         app_name = form.app_name.data
@@ -87,6 +99,7 @@ def dashboard():
         user.data = encrypt_data(str(data_dict))
         db.session.commit()
         flash(f'Data for {app_name} saved!', 'success')
+
     return render_template('dashboard.html', form=form)
 
 if __name__ == '__main__':
