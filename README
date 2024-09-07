@@ -1,0 +1,97 @@
+# Project Title: Web Application for User Authentication and Dashboard Management
+
+## Overview
+
+This project is a simple web application that provides user authentication (register, login, logout) and a dashboard interface. The app allows users to register, login, and view a personalized dashboard after authentication.
+
+### Project Files
+
+1. **HTML Files**:
+   - `register.html`: Handles the user registration page, allowing new users to sign up.
+   - `login.html`: Manages the user login functionality.
+   - `dashboard.html`: Displays the dashboard interface for authenticated users.
+
+2. **CSS File**:
+   - `style.css`: Contains the styling for the web application, ensuring the layout is user-friendly and responsive.
+
+3. **Python Backend**:
+   - `app.py`: Main application file that handles routing, authentication, and communication between the frontend and backend.
+   - `alembic.ini`: Configuration file for Alembic, a lightweight database migration tool.
+   - `env.py`: Environment configuration for database migrations.
+   - `script.py.mako`: A helper script for generating Alembic migrations.
+
+### Requirements
+
+- Python 3.x
+- Flask
+- Flask-WTF (for form handling)
+- Alembic (for database migrations)
+- SQLAlchemy (ORM for database interaction)
+
+### Setup Instructions
+
+1. **Clone the Repository**:
+   ```bash
+   git clone <repo-url>
+   cd <project-directory>
+   ```
+
+2. **Install Required Packages**:
+   Ensure you have all required dependencies installed by running:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Setup Database**:
+   - Configure the database in the `app.py` file and update the `alembic.ini` file as needed.
+   - Run database migrations using Alembic:
+     ```bash
+     alembic upgrade head
+     ```
+
+4. **Run the Application**:
+   To run the Flask application locally, use:
+   ```bash
+   flask run
+   ```
+   This will start the server on `http://127.0.0.1:5000/`.
+
+### Features
+
+- **User Registration**: Users can sign up for an account via the registration page (`register.html`).
+- **User Login**: Authenticated users can log in and access their personalized dashboard (`login.html`).
+- **Dashboard**: Displays user information after successful login (`dashboard.html`).
+- **Form Validation**: Built-in validation using Flask-WTF and CSRF protection.
+  
+### File Descriptions
+
+- **`register.html`**: A form for new users to sign up, which includes username, password fields, and validation messages【13†source】.
+- **`login.html`**: A login form that authenticates existing users, with links to register if they don't have an account【14†source】.
+- **`dashboard.html`**: The main page after login where authenticated users can access dashboard functionalities【12†source】.
+- **`style.css`**: Provides the design and layout for the web application, ensuring responsiveness and user-friendly visuals. Includes fade-in animations for the form elements【15†source】.
+  
+### Database
+
+- Alembic is used for handling database migrations.
+- SQLAlchemy ORM is employed for database interactions in the Flask application.
+
+### Contribution Guidelines
+
+1. Fork the repository and clone it to your machine.
+2. Create a new branch for your feature or bug fix:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m "Add new feature"
+   ```
+4. Push your changes to your branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request.
+
+### License
+
+This project is licensed under the MIT License.
